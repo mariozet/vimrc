@@ -17,7 +17,12 @@ Plugin 'vim-scripts/indentpython.vim'
 Plugin 'vim-syntastic/syntastic'
 Plugin 'nvie/vim-flake8'
 Plugin 'erikzaadi/vim-ansible-yaml'
+" Plugin 'tiagofumo/vim-nerdtree-syntax-highlight'
 " Plugin 'Valloric/YouCompleteMe'
+
+" Terraform syntax plugins
+Plugin 'hashivim/vim-terraform'
+Plugin 'juliosueiras/vim-terraform-completion'
 
 " Tree View
 Plugin 'scrooloose/nerdtree'
@@ -79,7 +84,7 @@ set encoding=utf-8
 " allow backspacing over everything in insert mode
 set backspace=indent,eol,start
 
-au BufNewFile,BufRead *.py
+au BufNewFile,BufRead *.py,*.conf,*.sh
     \ set tabstop=4 |
     \ set softtabstop=4 |
     \ set shiftwidth=4 |
@@ -88,7 +93,7 @@ au BufNewFile,BufRead *.py
     \ set autoindent |
     \ set fileformat=unix |
 
-au BufNewFile,BufRead *.yaml
+au BufNewFile,BufRead *.yaml,*.yml
     \ set tabstop=2 |
     \ set softtabstop=2 |
     \ set shiftwidth=2 |
@@ -98,6 +103,25 @@ au BufNewFile,BufRead *.yaml
 
 " Highlight White Spaces
 highlight BadWhitespace ctermbg=red guibg=darkred
-au BufRead,BufNewFile *.yaml,*.yml,*.py,*.pyw,*.c,*.h match BadWhitespace /\s\+$/
 
+" Change Directory highlight in NerdTree
+highlight Directory guifg=#FF0000 ctermfg=red
+
+au BufRead,BufNewFile *.yaml,*.yml,*.py,*.pyw,*.c,*.h match BadWhitespace /\s\+$/
 autocmd vimenter * NERDTree
+
+" (Optional)Remove Info(Preview) window
+set completeopt-=preview
+
+" (Optional)Hide Info(Preview) window after completions
+autocmd CursorMovedI * if pumvisible() == 0|pclose|endif
+autocmd InsertLeave * if pumvisible() == 0|pclose|endif
+
+" (Optional) Enable terraform plan to be include in filter
+let g:syntastic_terraform_tffilter_plan = 1
+
+" (Optional) Default: 0, enable(1)/disable(0) plugin's keymapping
+let g:terraform_completion_keys = 1
+
+" (Optional) Default: 1, enable(1)/disable(0) terraform module registry completion
+let g:terraform_registry_module_completion = 0
